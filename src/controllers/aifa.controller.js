@@ -2,14 +2,6 @@ import { pool } from "../connect.js";
 import dayjs from "dayjs";
 import moment from "moment";
 
-/*export const getEmployees = async (req, res) => {
-    try {
-        const rows = await pool.query("SELECT * FROM employees");
-        res.json(rows?.rows);
-    } catch (error) {
-        return res.status(500).json({ message: "Something goes wrong" + error });
-    }
-};*/
 
 export const valideFligth = async (req, res) => {
     try {

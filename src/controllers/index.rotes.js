@@ -3,44 +3,32 @@ import { pool } from "../connect.js";
 export const index = (req, res) => res.json({ message: "welcome to my api" });
 
 export const login = async (req, res) => {
-    const { email, password } = req.body;
-    console.log("🚀 ~ login ~ req.body:", req.body)
-
-    /*if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
-    }*/
-
     try {
-        const userQuery = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`;
-        console.log("🚀 ~ login ~ userQuery:", userQuery)
-        const userResult = await pool.query(userQuery, []);
+        const { _dealership, _id } = req.body;
+        console.log("🚀 ~ login ~ id:", _id)
+        console.log("🚀 ~ login ~ dealership:", _dealership)
+        console.log("🚀 ~ valideFligth ~ req.body:", req.body)
 
-        console.log("🚀 ~ login ~ userResult:", userResult)
-
-        if (userResult.rows.length === 0) {
-            return res.status(401).json({ error: 'Invalid credentials' });
+        if (!_dealership || !_id) {
+            return res.status(400).json({ message: `BODY: ${JSON.stringify(req.body)}`, error: "Faltan parámetros" });
         }
 
-        const user = userResult.rows[0];
+        try {
+            let query = `SELECT * FROM public."places" WHERE id = $1 AND dealership = $2;;`;
+            const login = await pool.query(query, [_id, _dealership]) || [];
 
-        const employeeQuery = `SELECT * FROM employees WHERE id = $1`;
-        const employeeResult = await pool.query(employeeQuery, [user.id]);
-        const employee = employeeResult.rows[0];
-        let response = {
-            user: {
-                ...user,
-                password: undefined
-            },
-            employee
-        };
+            if (login.rows[0]?.id) {
+                return res.status(200).json( login.rows[0] );
+            } else {
+                return res.json( false );
+            }
 
-        res.json(response);
-
+        } catch (error) {
+            console.error("❌ Error al consultar vuelos:", error);
+            res.status(500).json({ error: "Error interno del servidor" });
+        }
     } catch (error) {
-        console.error('Error during authentication:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ message: "Something goes wrong: " + error.message });
     }
 };
-
-
 
