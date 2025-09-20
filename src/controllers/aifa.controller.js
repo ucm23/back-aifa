@@ -22,9 +22,10 @@ export const valideFligth = async (req, res) => {
             _user_code,
             _user_name
         } = req.body;
+        console.log("🚀 ~ valideFligth ~ req.body:", req.body)
 
         if (!_hora || !_asiento || !_routing || !_flight_number || !_place_id || !_user_code || !_user_name) {
-            return res.status(400).json({ error: "Faltan parámetros" });
+            return res.status(400).json({ message: `BODY: ${JSON.stringify(req.body)}`, error: "Faltan parámetros" });
         }
 
         try {
