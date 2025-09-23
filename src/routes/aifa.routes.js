@@ -5,6 +5,6 @@ import {
 
 const router = Router();
 
-router.post("/", valideFligth);
+router.post("/", valideF|ligth);
 
 export default router;
