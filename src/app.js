@@ -3,7 +3,7 @@ import morgan from "morgan";
 import cors from 'cors';
 //import path from "path";
 
-import bodyParser from 'body-parser';
+//import bodyParser from 'body-parser';
 import indexRoutes from "./routes/index.routes.js";
 import aifaRoutes from "./routes/aifa.routes.js";
 
