@@ -112,7 +112,7 @@ export const valideFligth = async (req, res) => {
             return res.status(400).json({ message: `BODY: ${JSON.stringify(req.body)}`, error: "Faltan parámetros" });
         }
 
-        const pattern = '';
+        let pattern = '';
 
         if (!contieneNLU(string_code_qr)) {
             return res.status(200).json({ value: 3 });
