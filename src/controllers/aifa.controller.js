@@ -73,7 +73,7 @@ function matchesPattern(cadena) {
     const normalizedStr = cadena.replace(/&lt;/g, '<');
     const pattern = /^M1[A-Z]+\/[A-Z]+\s+[A-Z0-9]+\s+[A-Z0-9]+\s+\d+\s+\d+Y\d+[A-Z]\d+\s+\d+[<>]\d+[A-Z0-9]*\d+[A-Z0-9]+\s+[A-Z0-9]*\s*\d+\s*.*$/;
 
-    if (pattern.test(normalizedStr)) return true;
+    if (pattern.test(normalizedStr)) return { string: normalizedStr, pattern: true };
 
     const nombreMatch = normalizedStr.match(/^(M1[A-Z]+\/[A-Z]+)/);
     if (!nombreMatch || nombreMatch[1].length <= 25) return false;
@@ -119,6 +119,7 @@ export const valideFligth = async (req, res) => {
         }
 
         const data = matchesPattern(string_code_qr);
+        console.log("🚀 ~ valideFligth ~ data:", data)
         if (data.pattern) pattern = data?.string;
         else return res.status(400).json({ message: `No se puede formatear con contenido` });
 
