@@ -31,14 +31,26 @@ function extractFlightData(route, lane_direction = null) {
         lane = { carril, sentido };
     }
 
+    const fecha = null;
+    const parte5 = partes[4];
+    const matchDate = parte5.match(/^(\d+)Y/);
+    fecha = juliana(parseInt(matchDate[1], 10));
+
     return {
         _name,
         _code,
         _routing,
         _flight_number,
         _chair,
-        lane
+        lane,
+        date: fecha
     };
+}
+
+function juliana(date) {
+  const fecha = new Date(new Date().getFullYear(), 0);
+  fecha.setDate(fecha.getDate() + (date - 1));
+  return fecha.toISOString().split("T")[0];
 }
 
 
@@ -84,10 +96,10 @@ function matchesPattern(cadena) {
  * @returns {Object} Respuesta JSON
  * @param {Object} res - { value: int, message: string }
  *                     value = null / undefinied -> QR no valido
-*                      value = 0 -> QR no valido
-*                      value = 1 -> QR valido
-*                      value = 2 -> QR valido, pero repetido
-*                      value = 3 -> QR no valido (no es del AIFA)
+ *                      value = 0 -> QR no valido
+ *                      value = 1 -> QR valido
+ *                      value = 2 -> QR valido, pero repetido
+ *                      value = 3 -> QR no valido (no es del AIFA)
  * 
  */
 
